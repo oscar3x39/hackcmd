@@ -1,0 +1,12 @@
+[env]
+compose = "docker-compose run --rm php"
+
+[alias]
+
+# php artisan $param = $compose php artisan $param
+[php]
+php artisan migrate"
+$compose php artisan $param"
+WORKDIR:
+    - ./src
+ROOT: true
