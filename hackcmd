@@ -1,0 +1,85 @@
+#!/usr/bin/env php
+<?php
+/*
+ * (c) OscarLee oscar3x39@gmail.com
+ */
+
+define("USAGE", "Usage: hackcmd .hackcmd");
+define("FILE_ERROR", "Check your yaml file syntax");
+define("SPACE", "			");
+
+$bash = "";
+$file = $argv[1];
+
+if (!file_exists($file)) exit(USAGE);
+
+$hackcmd = new hackcmd($file);
+file_put_contents("./cmd.sh", $hackcmd->render());
+
+class hackcmd {
+    private $env;
+    private $alias;
+    private $shell;
+
+    public function __construct($file) {
+        // Get global env variable
+        $yaml = yaml_parse_file($file);
+
+        $this->env = $yaml["env"];
+        $this->alias = $yaml["alias"];
+    }
+
+    function env() {
+        $env = $this->env;
+    }
+
+    function render() {
+        if (!count($this->alias)) exit(FILE_ERROR);
+
+        $shell = "";
+        foreach ($this->alias as $head => $funcs) {
+            // generate template
+            $template = $this->template();
+            $template = $this->setHead($template, $head);
+
+            $command_arr = [];
+            foreach ($funcs as $source => $func) {
+                // get values
+                $command = $func["command"];
+                $command_arr[] = $this->getCommand($source, $command);
+            }
+
+            $command = implode(PHP_EOL, $command_arr);
+            $shell .= $this->setCommand($template, $command);
+        }
+
+        return $shell;
+    }
+
+    function setHead($template, $head) {
+        if ($head) {
+            $template = str_replace("%head%", $head, $template);
+        }
+        return $template;
+    }
+
+    function setCommand($template, $command) {
+        if ($command) {
+            $template = str_replace("%command%", $command, $template);
+        }
+        return $template;
+    }
+
+    function getCommand($source, $command) {
+        $command_case = false;
+        if ($source && $command) {
+            $command_case = sprintf(SPACE."\"%s\"* ) command %s ;;", $source, $command);
+        }
+        return $command_case;
+    }
+
+    function template() {
+        return file_get_contents("./template.txt");
+    }
+}
+

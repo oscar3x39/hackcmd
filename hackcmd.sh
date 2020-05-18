@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-php ./hackcmd global
+php ./hackcmd
 source cmd.sh
