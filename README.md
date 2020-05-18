@@ -11,7 +11,7 @@ pecl install yaml
 
 ## How to setup
 ```
-git clone https://github.com/oscar3x39/hackcmd.git ~/.hackcmd
+git clone git@github.com:oscar3x39/hackcmd.git ~/.hackcmd
 ln -s ~/.hackcmd/hackcmd /usr/local/bin/hackcmd
 echo "source ~/.hackcmd/hackcmd.sh" > ~/.zshrc
 ```
