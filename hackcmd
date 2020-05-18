@@ -9,7 +9,7 @@ define("FILE_ERROR", "Check your yaml file syntax");
 define("SPACE", "			");
 
 $bash = "";
-$file = $argv[1];
+$file = $argv[1] ?? ".hackcmd";
 
 if (!file_exists($file)) exit(USAGE);
 
@@ -19,18 +19,29 @@ file_put_contents("./cmd.sh", $hackcmd->render());
 class hackcmd {
     private $env;
     private $alias;
-    private $shell;
+    private $command_list = [];
 
     public function __construct($file) {
         // Get global env variable
         $yaml = yaml_parse_file($file);
 
-        $this->env = $yaml["env"];
+        $this->env = $yaml["env"] ?? false;
         $this->alias = $yaml["alias"];
     }
 
-    function env() {
+    function setDoc($template) {
+        $im = implode(", ", $this->command_list);
+        return str_replace("%doc%", $im, $template);
+    }
+
+    function setEnv($template) {
         $env = $this->env;
+        if ($env) {
+            foreach ($env as $source => $replace) {
+                $template = str_replace("\$$source", $replace, $template);
+            }
+        }
+        return $template;
     }
 
     function render() {
@@ -47,12 +58,15 @@ class hackcmd {
                 // get values
                 $command = $func["command"];
                 $command_arr[] = $this->getCommand($source, $command);
+                $this->command_list[] = $source;
             }
 
             $command = implode(PHP_EOL, $command_arr);
             $shell .= $this->setCommand($template, $command);
         }
 
+        $shell = $this->setEnv($shell);
+        $shell = $this->setDoc($shell);
         return $shell;
     }
 

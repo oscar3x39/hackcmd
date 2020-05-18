@@ -1,8 +1,8 @@
 env:
     compose: docker-compose run --rm php
 alias:
-    'php':
-        'artisan tinker':
+    'artisan':
+        'tinker':
             command: $compose php artisan tinker
-        'artisan link':
+        'link':
             command: $compose php artisan storage:link
