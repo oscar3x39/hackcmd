@@ -20,18 +20,35 @@ class hackcmd {
     private $env;
     private $alias;
     private $command_list = [];
+    private $head;
 
     public function __construct($file) {
         // Get global env variable
         $yaml = yaml_parse_file($file);
-
         $this->env = $yaml["env"] ?? false;
         $this->alias = $yaml["alias"];
     }
 
-    function setDoc($template) {
-        $im = implode(", ", $this->command_list);
-        return str_replace("%doc%", $im, $template);
+    function reSpace($str) {
+        return str_replace(["\r", "\n", "\r\n", "\n\r"], '', $str);
+    }
+
+    function getHandle($head) {
+        $list = implode("\r\n", $this->command_list);
+        $handle = "Commands:\r\n$list";
+
+        $path = shell_exec("which $head") ?? false;
+        $path = $this->reSpace($path);
+        if ($path) {
+            $handle = "$path \$1";
+        }
+        return $handle;
+    }
+
+    function setHandle($head, $template) {
+        $handle = $this->getHandle($head);
+        var_dump($handle);
+        return str_replace("%handle%", $handle, $template);
     }
 
     function setEnv($template) {
@@ -62,11 +79,11 @@ class hackcmd {
             }
 
             $command = implode(PHP_EOL, $command_arr);
-            $shell .= $this->setCommand($template, $command);
+            $shell .= $this->setCommand($template, $command).PHP_EOL;
+            $shell = $this->setHandle($head, $shell);
         }
 
         $shell = $this->setEnv($shell);
-        $shell = $this->setDoc($shell);
         return $shell;
     }
 

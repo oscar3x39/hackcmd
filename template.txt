@@ -3,7 +3,9 @@ function %head%() {
 	if [[ -f "$FILE" ]]; then
 		case $* in
 %command%
-			* ) echo "Commands: %doc%" ;;
+			* ) %handle% ;;
 		esac
+	else
+	    %handle%;;
 	fi
 }

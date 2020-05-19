@@ -36,20 +36,15 @@ alias:
 hackcmd .hackcmd
 ```
 
-## Global Setting
-```
-export HACKCMD_DIR="~/code"
-```
-
 ### How It Work.
 ```
 #!/usr/bin/env bash
-function php() {
+function artisan() {
 	FILE=$PWD/.aliases
 	if [[ -f "$FILE" ]]; then
 		case $* in
-			"artisan tinker"* ) command docker-compose run php php artisan tinker ;;
-            "artisan link"* ) command $compose php artisan storage:link ;;
+            "tinker"* ) command docker-compose run php php artisan tinker ;;
+            "link"* ) command $compose php artisan storage:link ;;
 		esac
 	fi
 }
