@@ -19,8 +19,7 @@ file_put_contents("./cmd.sh", $hackcmd->render());
 class hackcmd {
     private $env;
     private $alias;
-    private $command_list = [];
-    private $head;
+    private $doc = [];
 
     public function __construct($file) {
         // Get global env variable
@@ -33,9 +32,20 @@ class hackcmd {
         return str_replace(["\r", "\n", "\r\n", "\n\r"], '', $str);
     }
 
+    function getDoc() {
+        $result = "";
+        foreach ($this->doc as $head => $commands) {
+            foreach ($commands as $command) {
+                $result .= "  - $head $command".PHP_EOL;
+            }
+        }
+
+        return $result;
+    }
+
     function getHandle($head) {
-        $list = implode("\r\n", $this->command_list);
-        $handle = "Commands:\r\n$list";
+        $doc = $this->getDoc();
+        $handle = "Commands:\r\n$doc";
 
         $path = shell_exec("which $head") ?? false;
         $path = $this->reSpace($path);
@@ -45,9 +55,8 @@ class hackcmd {
         return $handle;
     }
 
-    function setHandle($head, $template) {
+    function setHandle($template, $head) {
         $handle = $this->getHandle($head);
-        var_dump($handle);
         return str_replace("%handle%", $handle, $template);
     }
 
@@ -69,18 +78,19 @@ class hackcmd {
             // generate template
             $template = $this->template();
             $template = $this->setHead($template, $head);
+            $this->doc[$head] = [];
 
             $command_arr = [];
             foreach ($funcs as $source => $func) {
                 // get values
                 $command = $func["command"];
                 $command_arr[] = $this->getCommand($source, $command);
-                $this->command_list[] = $source;
+                $this->doc[$head][] = $source;
             }
 
             $command = implode(PHP_EOL, $command_arr);
             $shell .= $this->setCommand($template, $command).PHP_EOL;
-            $shell = $this->setHandle($head, $shell);
+            $shell = $this->setHandle($shell, $head);
         }
 
         $shell = $this->setEnv($shell);

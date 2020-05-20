@@ -1,29 +1,34 @@
 function docker() {
-	FILE=$PWD/.hackcmd
+	FILE=$PWD/example/.hackcmd
 	if [[ -f "$FILE" ]]; then
 		case $* in
-			"tinker"* ) command docker-compose run --rm php php artisan tinker ;;
-			* ) /usr/local/bin/docker $1 ;;
+			"v"* ) command docker version ;;
+			"i"* ) command docker info ;;
+			* ) echo '/usr/local/bin/docker $1' ;;
 		esac
 	else
-	    /usr/local/bin/docker $1;;
+	    echo '/usr/local/bin/docker $1'
 	fi
 }
 function artisan() {
-	FILE=$PWD/.hackcmd
+	FILE=$PWD/example/.hackcmd
 	if [[ -f "$FILE" ]]; then
 		case $* in
 			"tinker"* ) command docker-compose run --rm php php artisan tinker ;;
 			"link"* ) command docker-compose run --rm php php artisan storage:link ;;
-			* ) Commands:
-tinker
-tinker
-link ;;
+			* ) echo 'Commands:
+  - docker v
+  - docker i
+  - artisan tinker
+  - artisan link
+' ;;
 		esac
 	else
-	    Commands:
-tinker
-tinker
-link;;
+	    echo 'Commands:
+  - docker v
+  - docker i
+  - artisan tinker
+  - artisan link
+'
 	fi
 }

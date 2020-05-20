@@ -2,8 +2,10 @@ env:
     compose: docker-compose run --rm php
 alias:
     'docker':
-        'tinker':
-            command: $compose php artisan tinker
+        'v':
+            command: docker version
+        'i':
+            command: docker info
     'artisan':
         'tinker':
             command: $compose php artisan tinker
