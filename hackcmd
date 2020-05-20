@@ -7,6 +7,7 @@
 define("USAGE", "Usage: hackcmd .hackcmd");
 define("FILE_ERROR", "Check your yaml file syntax");
 define("SPACE", "			");
+define("CURRENT_DIR", __DIR__);
 
 $bash = "";
 $file = $argv[1] ?? ".hackcmd";
@@ -14,7 +15,7 @@ $file = $argv[1] ?? ".hackcmd";
 if (!file_exists($file)) exit(USAGE);
 
 $hackcmd = new hackcmd($file);
-file_put_contents("./hackcmd.sh", $hackcmd->render());
+file_put_contents(CURRENT_DIR."/hackcmd.sh", $hackcmd->render());
 
 class hackcmd {
     private $env;
@@ -120,7 +121,7 @@ class hackcmd {
     }
 
     function template() {
-        return file_get_contents("./template.txt");
+        return file_get_contents(CURRENT_DIR."/template.txt");
     }
 }
 
