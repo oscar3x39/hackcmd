@@ -14,7 +14,7 @@ $file = $argv[1] ?? ".hackcmd";
 if (!file_exists($file)) exit(USAGE);
 
 $hackcmd = new hackcmd($file);
-file_put_contents("./cmd.sh", $hackcmd->render());
+file_put_contents("./hackcmd.sh", $hackcmd->render());
 
 class hackcmd {
     private $env;

@@ -22,7 +22,7 @@ pecl install yaml
 ```
 git clone git@github.com:oscar3x39/hackcmd.git ~/.hackcmd
 ln -s ~/.hackcmd/hackcmd /usr/local/bin/hackcmd
-echo "source ~/.hackcmd/hackcmd.sh" > ~/.zshrc
+echo "source ~/.hackcmd/hackcmd.sh" >> ~/.zshrc
 ```
 
 touch A `.hackcmd` in your root directory
