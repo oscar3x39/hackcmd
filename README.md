@@ -1,15 +1,6 @@
 Hackcmd is a custom your command in your folder directory.
 
-## Example
-
-```
-docker i // docker info
-docker v // docker version
-artisan tinker // docker-compose run --rm php php artisan tinker
-artisan link // docker-compose run --rm php php artisan storage:link
-```
-
-### How to install environment
+### Environment
 
 via Mac OSX
 ```
@@ -18,7 +9,7 @@ brew install libyaml
 pecl install yaml
 ```
 
-## How to setup
+## Getting started
 ```
 git clone git@github.com:oscar3x39/hackcmd.git ~/.hackcmd
 ln -s ~/.hackcmd/hackcmd /usr/local/bin/hackcmd
@@ -35,14 +26,16 @@ alias:
             command: docker version
         'i':
             command: docker info
-    'artisan':
-        'tinker':
-            command: $compose php artisan tinker
-        'link':
-            command: $compose php artisan storage:link
 ```
 
-## Manual
+and run it
 ```
 hackcmd .hackcmd
+```
+
+## Example
+
+```
+docker i // docker info
+docker v // docker version
 ```
