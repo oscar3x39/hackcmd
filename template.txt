@@ -1,7 +1,7 @@
 function %head%() {
 	FILE=$PWD/.hackcmd
 	if [[ -f "$FILE" ]]; then
-		case $* in
+		case $1 in
 %command%
 			* ) echo '%handle%' ;;
 		esac

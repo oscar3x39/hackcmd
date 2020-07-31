@@ -16,7 +16,6 @@ if (!file_exists($file)) exit(USAGE);
 
 $hackcmd = new hackcmd($file);
 file_put_contents(CURRENT_DIR."/hackcmd.sh", $hackcmd->render());
-shell_exec("source ".CURRENT_DIR."/hackcmd.sh");
 
 class hackcmd {
     private $env;

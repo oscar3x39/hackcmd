@@ -13,7 +13,11 @@ pecl install yaml
 ```
 git clone git@github.com:oscar3x39/hackcmd.git ~/.hackcmd
 ln -s ~/.hackcmd/hackcmd /usr/local/bin/hackcmd
-echo "source ~/.hackcmd/hackcmd.sh" >> ~/.zshrc
+```
+
+## Add Alias
+```
+alias hackcmd="hackcmd .hackcmd && source ~/.hackcmd/hackcmd.sh"
 ```
 
 touch A `.hackcmd` in your root directory
@@ -26,11 +30,13 @@ alias:
             command: docker version
         'i':
             command: docker info
+        'attach'
+            command: docker attach $2
 ```
 
 and run it
 ```
-hackcmd .hackcmd
+hackcmd
 ```
 
 ## Example
@@ -38,4 +44,5 @@ hackcmd .hackcmd
 ```
 docker i // docker info
 docker v // docker version
+docker attach e8413e0b83d1 // attach container
 ```

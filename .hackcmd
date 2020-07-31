@@ -1,5 +1,5 @@
 env:
-    compose: docker-compose run --rm php
+    compose: docker-compose run --rm
 alias:
     'docker':
         'v':
